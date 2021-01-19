@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+	AOP 反射->代理模式->责任链模式（拦截器模式）-》AOP
+	spring - > ioc inverse of control (控制反转) new servletname serlvetclass 
+		scope :生命周期 singleton: 单例 request: 生命周期跟随request session：生命周期跟随session prototype: 
+		原型 -->
+	<bean id="mockServlet1"
+		class="net.seehop.spring.mock.servlet.MockServlet1" scope="singleton"
+		init-method="init" destroy-method="detsory"></bean>
+
+	<bean id="mockServlet2"
+		class="net.seehop.spring.mock.servlet.MockServlet2"></bean>
+
+	<!-- DI 依赖注入 dependency injection -->
+	<bean id="userController"
+		class="net.seehop.spring.web.controller.UserController">
+		<!-- <constructor-arg index="0" ref="userServiceImpl"></constructor-arg> -->
+		<!-- 通过该类的get/set 方法赋值 -->
+		<property name="userService" ref="userServiceImpl2"></property>
+	</bean>
+
+	<bean id="userServiceImpl"
+		class="net.seehop.spring.service.impl.UserServiceImpl">
+		<!-- <constructor-arg index="0" ref="userMapper"></constructor-arg> -->
+		<property name="userMapper" ref="userMapper"></property>
+	</bean>
+
+	<bean id="userServiceImpl2"
+		class="net.seehop.spring.service.impl.UserServiceImpl2">
+		<!-- <constructor-arg index="0" ref="userMapper"></constructor-arg> -->
+		<property name="userMapper" ref="userMapper"></property>
+	</bean>
+
+	<!-- di 将maven中的某些工具类引入到工程的时候，添加初始化配置 -->
+	<bean id="userMapper" class="net.seehop.spring.mapper.UserMapper">
+		<property name="name" value="mt"></property>
+		<property name="names">
+			<array>
+				<!-- <ref /> -->
+				<value>mt1</value>
+				<value>mt2</value>
+				<value>mt3</value>
+			</array>
+		</property>
+		<property name="ids">
+			<list>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</list>
+		</property>
+		<property name="age" value="10"></property>
+		<property name="keysMap">
+			<map>
+				<entry key="mt" value="123456"></entry>
+			</map>
+		</property>
+		<property name="properties">
+			<props>
+				<prop key="mt">123456</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>
